@@ -2,6 +2,7 @@ package TH_WEB.Controller;
 
 import TH_WEB.Enity.Contact;
 import TH_WEB.Enity.Phone;
+import TH_WEB.Respository.ContactRespos;
 import TH_WEB.Service.ContactService;
 import TH_WEB.Service.PhoneService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,6 +23,8 @@ public class ProductController {
 
     @Autowired
     PhoneService phoneService;
+    @Autowired
+    private ContactRespos contactRespos;
 
 
     /**
@@ -31,7 +34,7 @@ public class ProductController {
 
     @GetMapping("/contacts")
     public ResponseEntity<?> getContracts(){
-        List<Contact> contacts = contactService.listAll();
+        List<Contact> contacts = contactRespos.findAll();
         return ResponseEntity.ok(contacts);
     }
 
@@ -39,7 +42,7 @@ public class ProductController {
      lấy số diện thoại từ 1 contact
      truyền contactId
      **/
-    @GetMapping("/contracts/{contactId}/phone")
+    @GetMapping("/contacts/{contactId}/phone")
     public ResponseEntity<?> getPhoneById(@PathVariable int contactId){
         Contact contact = contactService.findbyID(contactId);
         return ResponseEntity.ok(contact.getPhones());
@@ -49,7 +52,7 @@ public class ProductController {
      Thêm 1 contact mới
      truyền Body contact
      **/
-    @PostMapping("/contracts")
+    @PostMapping("/contacts")
     public ResponseEntity<?>  addContact(@RequestBody Contact contact)
     {
         return ResponseEntity.ok(contactService.save(contact));
@@ -60,7 +63,7 @@ public class ProductController {
      Lấy thông tin Contact
      truyền contactId
      **/
-    @GetMapping("/contracts/{contactId}")
+    @GetMapping("/contacts/{contactId}")
     public ResponseEntity<?> getContactById(@PathVariable int contactId){
         Contact contact = contactService.findbyID(contactId);
         return ResponseEntity.ok(contact);
@@ -91,7 +94,7 @@ public class ProductController {
      truyền body Contact
      **/
 
-    @PostMapping("/contracts/{contractId}/phones")
+    @PostMapping("/contacts/{contractId}/phones")
     public ResponseEntity <?> addPhone(@RequestBody Contact contact)
     {
         return ResponseEntity.ok(contactService.save(contact));
